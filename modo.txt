@@ -1,0 +1,291 @@
+import { useState } from "react";
+import { api } from "~/utils/api";
+
+
+export default function Home() {
+  // Constants and State for Cliente
+  const [clienteData, setClienteData] = useState({
+    name: "",
+    email: "",
+    idToUpdate: "",
+    nameToUpdate: "",
+    emailToUpdate: "",
+    idToDelete: "",
+  });
+
+  // Constants and State for Abogado
+  const [abogadoData, setAbogadoData] = useState({
+    name: "",
+    email: "",
+    idToUpdate: "",
+    nameToUpdate: "",
+    emailToUpdate: "",
+    idToDelete: "",
+  });
+
+  // Constants and State for Expediente
+  const [expedienteData, setExpedienteData] = useState({
+    body: "",
+    categories: "",
+    idToUpdate: "",
+    bodyToUpdate: "",
+    categoriesToUpdate: "",
+    idToDelete: "",
+  });
+
+  // Functions for Cliente
+  const { data: allClientes, refetch: fetchAllClientes } = api.clientes.getAllClientes.useQuery() as { data: YourDataType, refetch: () => void }; 
+  const { data: oneCliente } = api.clientes.getClienteById.useQuery({ id: clienteData.idToUpdate });
+  const createClienteMutation = api.clientes.createCliente.useMutation();
+  const updateClienteMutation = api.clientes.updateCliente.useMutation();
+  const deleteClienteMutation = api.clientes.deleteCliente.useMutation();
+
+  const handleCreateCliente = async () => {
+    try {
+      await createClienteMutation.mutateAsync({
+        name: clienteData.name,
+        email: clienteData.email,
+      });
+      setClienteData({
+        ...clienteData,
+        name: "",
+        email: "",
+      });
+      fetchAllClientes();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+console.log("Hola",allClientes)
+  const handleUpdateCliente = async () => {
+    try {
+      await updateClienteMutation.mutateAsync({
+        id: clienteData.idToUpdate,
+        name: clienteData.nameToUpdate,
+        email: clienteData.emailToUpdate,
+      });
+      setClienteData({
+        ...clienteData,
+        idToUpdate: "",
+        nameToUpdate: "",
+        emailToUpdate: "",
+      });
+      fetchAllClientes();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleDeleteCliente = async () => {
+    try {
+      await deleteClienteMutation.mutateAsync({
+        id: clienteData.idToDelete,
+      });
+      setClienteData({
+        ...clienteData,
+        idToDelete: "",
+      });
+      fetchAllClientes();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  // Functions for Abogado
+  const { data: allAbogados, refetch: fetchAllAbogados } = api.abogados.getAllAbogados.useQuery();
+  const { data: oneAbogado } = api.abogados.getAbogadoById.useQuery({ id: abogadoData.idToUpdate });
+  const createAbogadoMutation = api.abogados.createAbogado.useMutation();
+  const updateAbogadoMutation = api.abogados.updateAbogado.useMutation();
+  const deleteAbogadoMutation = api.abogados.deleteAbogado.useMutation();
+
+  const handleCreateAbogado = async () => {
+    try {
+      await createAbogadoMutation.mutateAsync({
+        name: abogadoData.name,
+        email: abogadoData.email,
+      });
+      setAbogadoData({
+        ...abogadoData,
+        name: "",
+        email: "",
+      });
+      fetchAllAbogados();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleUpdateAbogado = async () => {
+    try {
+      await updateAbogadoMutation.mutateAsync({
+        id: abogadoData.idToUpdate,
+        name: abogadoData.nameToUpdate,
+        email: abogadoData.emailToUpdate,
+      });
+      setAbogadoData({
+        ...abogadoData,
+        idToUpdate: "",
+        nameToUpdate: "",
+        emailToUpdate: "",
+      });
+      fetchAllAbogados();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleDeleteAbogado = async () => {
+    try {
+      await deleteAbogadoMutation.mutateAsync({
+        id: abogadoData.idToDelete,
+      });
+      setAbogadoData({
+        ...abogadoData,
+        idToDelete: "",
+      });
+      fetchAllAbogados();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  // Functions for Expediente
+  const { data: allExpedientes, refetch: fetchAllExpedientes } = api.expedientes.getAllExpedientes.useQuery();
+  const { data: oneExpediente } = api.expedientes.getExpedienteById.useQuery({ id: expedienteData.idToUpdate });
+  const createExpedienteMutation = api.expedientes.createExpediente.useMutation();
+  const updateExpedienteMutation = api.expedientes.updateExpediente.useMutation();
+  const deleteExpedienteMutation = api.expedientes.deleteExpediente.useMutation();
+
+  const handleCreateExpediente = async () => {
+    try {
+      await createExpedienteMutation.mutateAsync({
+        body: expedienteData.body,
+        categories: expedienteData.categories,
+        clienteId: clienteData.id, // Use the appropriate id for the desired cliente
+        abogadoId: abogadoData.id, // Use the appropriate id for the desired abogado
+      });
+      setExpedienteData({
+        ...expedienteData,
+        body: "",
+        categories: "",
+      });
+      setClienteData({
+        ...clienteData,
+        id: "",
+      });
+      setAbogadoData({
+        ...abogadoData,
+        id: "",
+      });
+      fetchAllExpedientes();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleUpdateExpediente = async () => {
+    try {
+      await updateExpedienteMutation.mutateAsync({
+        id: expedienteData.idToUpdate,
+        body: expedienteData.bodyToUpdate,
+        categories: expedienteData.categoriesToUpdate,
+      });
+      setExpedienteData({
+        ...expedienteData,
+        idToUpdate: "",
+        bodyToUpdate: "",
+        categoriesToUpdate: "",
+      });
+      fetchAllExpedientes();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleDeleteExpediente = async () => {
+    try {
+      await deleteExpedienteMutation.mutateAsync({
+        id: expedienteData.idToDelete,
+      });
+      setExpedienteData({
+        ...expedienteData,
+        idToDelete: "",
+      });
+      fetchAllExpedientes();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  return (
+    <div className="mx-auto p-8">
+    <div className="mb-8">
+      <h2 className="mb-4 text-2xl font-bold">Get All Clientes</h2>
+    </div>
+    <button
+      className="rounded bg-blue-500 px-4 py-2 text-white hover:bg-blue-600"
+      onClick={() => fetchAllClientes.refetch()}
+    >
+      Get All Clientes
+    </button>
+
+    <div className="text- mb-4 mt-4 grid grid-cols-3 gap-4 font-bold">
+      <p>Id</p>
+      <p>Name</p>
+      <p>Email</p>
+      <p>Foto</p>
+    </div>
+
+    {fetchAllClientes.data &&
+      fetchAllClientes.data.map((user) => (
+        <div
+          key={user.id}
+          className="my-4 grid grid-cols-3 gap-4 rounded border border-gray-300 bg-white p-4 shadow"
+        >
+          <p>{user.id}</p>
+          <p>{user.name}</p>
+          <p>{user.email}</p>
+        
+        </div>
+      ))}</div>
+     
+  );
+  
+}
+
+
+
+
+
+
+
+const fetchOneCliente = api.exampleRouterClientes.getClienteById.useQuery({ id: clienteId });
+
+
+
+
+  {/* Get one user UI */}
+
+         <div className="mb-8">
+        <h2 className="mb-4 text-2xl font-bold">Cada cliente</h2>
+        <div className="mb-4 flex">
+          <input
+            className="mr-2 border border-gray-300 p-2"
+            placeholder="Enter user id to get"
+            value={clienteId || ""}
+            onChange={(e) => setClienteId(String(e.target.value))}
+          />
+          <button
+            className="rounded bg-blue-500 px-4 py-2 text-white hover:bg-blue-600"
+            onClick={() => fetchOneCliente.refetch()}
+          >
+           Obtener un Cliente
+          </button>
+        </div>
+        {fetchOneCliente.data && (
+          <div>
+            <p>Name: {fetchOneCliente.data.name}</p>
+            <p>Email: {fetchOneCliente.data.email}</p>
+          </div>
+        )}
+      </div>

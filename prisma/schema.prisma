@@ -2,17 +2,50 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
-    provider = "prisma-client-js"
+    provider        = "prisma-client-js"
     previewFeatures = ["jsonProtocol"]
 }
 
 datasource db {
-    provider = "sqlite"
+    provider = "postgresql"
     url      = env("DATABASE_URL")
 }
 
-model Example {
-    id        String   @id @default(cuid())
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
+//Lawyer with an id, name, email and photo as strings
+
+model Abogados {
+    id    String @id @default(uuid())
+    name  String
+    email String
+    photo String
+
+    Expedientes Expedientes[]
+}
+
+//Client with an id, name, email and photo as strings
+
+model Clientes {
+    id    String @id @default(uuid())
+    ci    String
+    name  String
+    email String
+    photo String
+
+    Expedientes Expedientes[]
+}
+
+//Dossier File with an id, autur, body, category, ci, client, status, exp, file, mailClient, date and resumen
+model Expedientes {
+    id         String    @id @default(uuid())
+    body       String
+    categories String
+    ci         String
+    cliente    Clientes? @relation(fields: [id], references: [id], map: "cliente_fkey")
+    status     String
+    exp        String
+    file       String
+    mailClient String
+    postedOn   DateTime
+    resumen    String
+    abogado    Abogados? @relation(fields: [id], references: [id], map: "abogado_fkey")
 }
