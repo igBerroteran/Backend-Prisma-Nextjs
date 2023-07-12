@@ -75,6 +75,7 @@ const clienteSchema = z.object({
   name: z.string(),
   email: z.string(),
   photo: z.string(),
+  ci: z.string(),
 });
 
 const clienteUpdateSchema = z.object({
@@ -82,6 +83,7 @@ const clienteUpdateSchema = z.object({
   name: z.string(),
   email: z.string(),
   photo: z.string(),
+  ci: z.string(),
 });
 
 export const exampleRouterClientes = createTRPCRouter({
@@ -175,8 +177,8 @@ export const exampleRouterExpedientes = createTRPCRouter({
   getAllExpedientes: publicProcedure.query(({ ctx }) => {
     return ctx.prisma.expedientes.findMany({
       include: {
-        Cliente: true,
-        Abogado: true,
+        cliente: true,
+        abogado: true,
       },
     });
   }),
@@ -188,8 +190,8 @@ export const exampleRouterExpedientes = createTRPCRouter({
       return ctx.prisma.expedientes.findUnique({
         where: idSchema.parse(input),
         include: {
-          Cliente: true,
-          Abogado: true,
+          cliente: true,
+          abogado: true,
         },
       });
     }),
