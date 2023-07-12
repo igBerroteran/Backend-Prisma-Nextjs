@@ -52,10 +52,18 @@ export default function Home() {
     idToDelete: "",
   });
   const [clienteId, setClienteId] = useState("");
+  const [ClienteNameCreate, setCreateNameCliente] = useState("");
+  const [ClienteEmailCreate, setCreateEmailCliente] = useState("");
+  const [ClientePhotoCreate, setCreatePhotoCliente] = useState("");
+  const [ClienteCiCreate, setCreateCiCliente] = useState("");
+
+  // Update Cliente
+
   const [ClienteNameToUpdate, setNameToUpdateCliente] = useState("");
   const [ClienteEmailToUpdate, setEmailToUpdateCliente] = useState("");
   const [ClientePhotoToUpdate, setPhotoToUpdateCliente] = useState("");
   const [ClienteCiToUpdate, setCiToUpdateCliente] = useState("");
+
 
   
 
@@ -125,8 +133,8 @@ export default function Home() {
       setClienteData({
         name: "",
         email: "",
-        ci: "",
         photo: "",
+        ci: "",
         idToUpdate: "",
         nameToUpdate: "",
         emailToUpdate: "",
@@ -137,6 +145,15 @@ export default function Home() {
       console.log(error);
     }
   };
+
+  const handleChangeCliente = (e) => {
+    const { name, value } = e.target;
+    setClienteData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
+  
 
   
 
@@ -162,7 +179,7 @@ export default function Home() {
   };
 
     // Define handlers for Expedientes
-    // Define handlers for Abogados
+
     const handleCreateExpediente = async () => {
     try {
       await createAbogadosMutation.mutateAsync({
@@ -255,41 +272,63 @@ export default function Home() {
 
          {/* Create User */}
          <div className="mb-8">
-        <h2 className="mb-4 text-2xl font-bold">Create New User</h2>
-        <div className="mb-4 flex">
-          <input
-            className="mr-2 w-1/2 border border-gray-300 p-2"
-            placeholder="Name"
-            value={ClienteNameToUpdate}
-            onChange={(e) => setNameToUpdateCliente(e.target.value)}
-          />
-          <input
-            className="w-1/2 border border-gray-300 p-2"
-            placeholder="Email"
-            value={ClienteEmailToUpdate}
-            onChange={(e) => setEmailToUpdateCliente(e.target.value)}
-          />
-           <input
-            className="w-1/2 border border-gray-300 p-2"
-            placeholder="Email"
-            value={ClientePhotoToUpdate}
-            onChange={(e) => setPhotoToUpdateCliente(e.target.value)}
-          />
-           <input
-            className="w-1/2 border border-gray-300 p-2"
-            placeholder="Email"
-            value={ClienteCiToUpdate}
-            onChange={(e) => setCiToUpdateCliente(e.target.value)}
-          />
-        </div>
-
-        <button
-          className="rounded bg-green-500 px-4 py-2 text-white hover:bg-green-600"
-          onClick={handleCreateCliente}
-        >
-          Create User
-        </button>
+  <form onSubmit={handleCreateCliente}>
+    <h2 className="mb-4 text-2xl font-bold">Crear nuevo Cliente</h2>
+    <div className="flex flex-wrap">
+      <div className="flex flex-col w-1/4">
+        <label htmlFor="name">Nombre</label>
+        <input
+          className=" mx-2  border border-gray-300 p-2"
+          type="text"
+          id="name"
+          name="name"
+          value={clienteData.name}
+          onChange={handleChangeCliente}
+        />
       </div>
+      <div className=" flex flex-col w-1/4">
+        <label htmlFor="email">Email</label>
+        <input
+          className="mx-2 border border-gray-300 p-2"
+          type="email"
+          id="email"
+          name="email"
+          value={clienteData.email}
+          onChange={handleChangeCliente}
+        />
+      </div>
+      <div className="flex flex-col w-1/4">
+        <label htmlFor="photo">Foto</label>
+        <input
+          className="mx-2 border border-gray-300 p-2"
+          type="text"
+          id="photo"
+          name="photo"
+          value={clienteData.photo}
+          onChange={handleChangeCliente}
+        />
+      </div>
+      <div className="flex  flex-col w-1/4">
+        <label htmlFor="ci">CI</label>
+        <input
+          className="mx-1 border border-gray-300 p-2"
+          type="text"
+          id="ci"
+          name="ci"
+          value={clienteData.ci}
+          onChange={handleChangeCliente}
+        />
+      </div>
+    </div>
+    <button
+      className="rounded mt-6  bg-green-500 px-4 py-2 text-white hover:bg-green-600"
+      type="submit"
+    >
+      Crear
+    </button>
+  </form>
+</div>
+
 
       
 
